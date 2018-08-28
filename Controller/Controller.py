@@ -48,74 +48,74 @@ class Controller:
                 database.sendMessage(username, userView.receiver, userView.content)
 
 
-def sendMessage(self, username):
-    print '\n\nCo 2 cach de gui tin nhan:\n1. Nhap vao tai khoan nguoi nhan\n2. Bam truc tiep Ctr+L\n\n'
-    print 'Nhap ten nguoi nhan: '
+    def sendMessage(self, username):
+        print '\n\nCo 2 cach de gui tin nhan:\n1. Nhap vao tai khoan nguoi nhan\n2. Bam truc tiep Ctr+L\n\n'
+        print 'Nhap ten nguoi nhan: '
 
-    Ctr_L = ord(getch())
-    if Ctr_L == 12:
-        print '\n\n'
-        database.Ctr_L(username)
-    else:
-        userView.nhanTin()
-        database.sendMessage(username, userView.receiver, userView.content)
-
-
-def editInfoFriend(self, username):
-    userView.editInfoFriend = raw_input('Nhap ten nguoi ban muon sua thong tin: ')
-    if database.check2(userView.editInfoFriend):
-        if database.checkTableFriend(username, userView.editInfoFriend):
-            database.showInfoFriend(username, userView.editInfoFriend)
-            print '\t\t-----------SUA THONG TIN BAN BE-----------'
-            userView.fullname = raw_input('Nhap day du ho va ten: ')
-            userView.birthday = raw_input('Ngay sinh: ')
-            userView.sex = raw_input('Gioi tinh: ')
-            userView.address = raw_input('Dia chi: ')
-            database.editInfoFriend(userView.editInfoFriend, userView.fullname, userView.birthday, userView.sex,
-                                    userView.address)
+        Ctr_L = ord(getch())
+        if Ctr_L == 12:
+            print '\n\n'
+            database.Ctr_L(username)
         else:
-            print '\t\tChua ket ban. Ko the sua !!!\n'
-    else:
-        print '\t\tTai khoan ko ton tai hoac da bi xoa !!!\n'
+            userView.nhanTin()
+            database.sendMessage(username, userView.receiver, userView.content)
 
 
-def listFriend(self, username):
-    database.listFriend(username)
+    def editInfoFriend(self, username):
+        userView.editInfoFriend = raw_input('Nhap ten nguoi ban muon sua thong tin: ')
+        if database.check2(userView.editInfoFriend):
+            if database.checkTableFriend(username, userView.editInfoFriend):
+                database.showInfoFriend(username, userView.editInfoFriend)
+                print '\t\t-----------SUA THONG TIN BAN BE-----------'
+                userView.fullname = raw_input('Nhap day du ho va ten: ')
+                userView.birthday = raw_input('Ngay sinh: ')
+                userView.sex = raw_input('Gioi tinh: ')
+                userView.address = raw_input('Dia chi: ')
+                database.editInfoFriend(userView.editInfoFriend, userView.fullname, userView.birthday, userView.sex,
+                                        userView.address)
+            else:
+                print '\t\tChua ket ban. Ko the sua !!!\n'
+        else:
+            print '\t\tTai khoan ko ton tai hoac da bi xoa !!!\n'
 
 
-def addFriend(self, username):
-    userView.Friend = raw_input('Nhap ten ban be muon them: ')
-    database.addFriend(username, userView.Friend)
+    def listFriend(self, username):
+        database.listFriend(username)
 
 
-def block(self, username):
-    userView.block = raw_input('Nhap ten ban be muon block: ')
-    database.block(username, userView.block)
+    def addFriend(self, username):
+        userView.Friend = raw_input('Nhap ten ban be muon them: ')
+        database.addFriend(username, userView.Friend)
 
 
-def showInfo(self, username):
-    database.showInfo(username)
+    def block(self, username):
+        userView.block = raw_input('Nhap ten ban be muon block: ')
+        database.block(username, userView.block)
 
 
-def sortFriend(self, username):
-    database.sortFriend(username)
+    def showInfo(self, username):
+        database.showInfo(username)
 
 
-def sortFriendOfCity(self, username):
-    database.sortFriendOfCity(username)
+    def sortFriend(self, username):
+        database.sortFriend(username)
 
 
-def Ctr_L(self, username):
-    print '\nCo 2 cach de gui tin nhan:\n1. Nhap vao tai khoan nguoi nhan\n2. Bam truc tiep Ctrl+L de hien thi danh sach ban be\n\n'
-    print 'Nhap ten nguoi nhan: '
+    def sortFriendOfCity(self, username):
+        database.sortFriendOfCity(username)
 
-    # Hàm getch() sẽ nhận dạng phím mà bạn ấn vào và hàm ord() sẽ chuyển nó về mã ASCII
-    Ctr_L = ord(getch())
-    if Ctr_L == 12:
-        print(Ctr_L)
-        # để dừng màn hình xem thôi
-        # i = input()
-        database.Ctr_L(username)
-    else:
-        userView.nhanTin()
-        database.sendMessage(username, userView.receiver, userView.content)
+
+    def Ctr_L(self, username):
+        print '\nCo 2 cach de gui tin nhan:\n1. Nhap vao tai khoan nguoi nhan\n2. Bam truc tiep Ctrl+L de hien thi danh sach ban be\n\n'
+        print 'Nhap ten nguoi nhan: '
+
+        # Hàm getch() sẽ nhận dạng phím mà bạn ấn vào và hàm ord() sẽ chuyển nó về mã ASCII
+        Ctr_L = ord(getch())
+        if Ctr_L == 12:
+            print(Ctr_L)
+            # để dừng màn hình xem thôi
+            # i = input()
+            database.Ctr_L(username)
+        else:
+            userView.nhanTin()
+            database.sendMessage(username, userView.receiver, userView.content)

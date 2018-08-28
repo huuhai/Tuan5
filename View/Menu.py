@@ -75,7 +75,6 @@ class Menu:
             if chosse4 == '1':
                 controller.editInfoFriend(username)
             elif chosse4 == '2':
-                #controller.Ctr_L(username)
                 controller.Ctr_L(username)
                 controller.sendMessage(username)
             elif chosse4 == '3':
