@@ -1,0 +1,12 @@
+class User:
+    username = ''
+    password = ''
+    fullname = ''
+    address = ''
+    birthday = ''
+    sex = ''
+    Friend = ''
+    receiver = ''
+    content = ''
+    block = ''
+    editInfoFriend = ''
