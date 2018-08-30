@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import sqlite3
 import time
 import os
@@ -19,7 +20,6 @@ class Database:
             print "\tTai khoan da ton tai. Vui long chon tai khoan khac !!!"
         else:
             try:
-                # conn = sqlite3.connect('DuLieu.db')
                 conn_signUp = self.connect_db()
                 conn_signUp.execute("INSERT INTO AccountInfo VALUES(?,?,?,?,?,?)",
                                     (username, password, fullname, birthday, sex, address))
@@ -32,7 +32,6 @@ class Database:
             # conn_signUp.close()
 
     def check(self, username, password):
-        # con = sqlite3.connect('DuLieu.db')
         conn = self.connect_db()
         with conn:
             cur = conn.cursor()
@@ -62,16 +61,10 @@ class Database:
             cur.execute("SELECT receiver, content, TimeDate, seen FROM Message where sender=?", (sender,))
 
             rows = cur.fetchall()
-            for row in rows:
-                Ctr_key = ord(getch())
-                if Ctr_key == 14:
-                    print row
-                elif Ctr_key == 2:
-                    break
+            self.key_Shortcut(rows)
 
     def showMessageReceived(self, receiver):
         if self.checkReceiverMessage(receiver):
-            # sql = ("update Message set seen ='da doc' where receiver=?", (receiver,))
             self.updateSeenMessage(receiver)
             conn = self.connect_db()
             with conn:
@@ -79,15 +72,18 @@ class Database:
                 cur.execute("select sender, content, TimeDate from Message where receiver =?", (receiver,))
 
                 rows = cur.fetchall()
-
-                for row in rows:
-                    Ctr_key = ord(getch())
-                    if Ctr_key == 14:
-                        print row
-                    elif Ctr_key == 2:
-                        break
+                self.key_Shortcut(rows)
         else:
             print '\n\n\t\tChua nhan duoc tin nhan nao !!!\n\n'
+
+    # phím tắt
+    def key_Shortcut(self, rows):
+        for row in rows:
+            Ctr_key = ord(getch())
+            if Ctr_key == 14:
+                print row
+            elif Ctr_key == 2:
+                break
 
     def updateSeenMessage(self, receiver):
         conn = self.connect_db()
@@ -101,12 +97,10 @@ class Database:
             cur.execute("select distinct receiver from Message where receiver =?", (receiver,))
 
             rows = cur.fetchall()
-
-            for row in rows:
-                if row[0] == receiver:
-                    return True
-                else:
-                    return False
+            if self.return_Boolean(rows, receiver):
+                return True
+            else:
+                return False
 
     def sendMessage(self, sender, receiver, content):
         localtime = time.asctime(time.localtime(time.time()))
@@ -129,12 +123,18 @@ class Database:
             cur.execute("select blocked from Block where username=? and blocked=?", (username, block,))
 
             rows = cur.fetchall()
+            if self.return_Boolean(rows, block):
+                return True
+            else:
+                return False
 
-            for row in rows:
-                if row[0] == block:
-                    return True
-                else:
-                    return False
+    # kt dữ liệu nhập vào với database
+    def return_Boolean(self, rows, tmp_Name):
+        for row in rows:
+            if row[0] == tmp_Name:
+                return True
+            else:
+                return False
 
     def check2(self, username):
         conn = self.connect_db()
@@ -143,12 +143,10 @@ class Database:
             cur.execute("select username from AccountInfo where username =?", (username,))
 
             rows = cur.fetchall()
-
-            for row in rows:
-                if row[0] == username:
-                    return True
-                else:
-                    return False
+            if self.return_Boolean(rows, username):
+                return True
+            else:
+                return False
 
     def checkTableFriend(self, username, Friend):
         conn = self.connect_db()
@@ -157,12 +155,10 @@ class Database:
             cur.execute("select friend from Friend where username =? and friend =?", (username, Friend))
 
             rows = cur.fetchall()
-
-            for row in rows:
-                if row[0] == Friend:
-                    return True
-                else:
-                    return False
+            if self.return_Boolean(rows, Friend):
+                return True
+            else:
+                return False
 
     def showInfoFriend(self, username, Friend):
         conn = self.connect_db()
@@ -175,14 +171,12 @@ class Database:
                 (username, Friend))
 
             rows = cur.fetchall()
-
-            for row in rows:
-                print row
+            self.printData(rows)
 
     def editInfoFriend(self, Friend, fullname, birthday, sex, address):
         conn = self.connect_db()
         conn.execute("update AccountInfo set fullname=?, birthday=?, sex=?, address=? where username=?",
-                     (Friend, fullname, birthday, sex, address))
+                     (fullname, birthday, sex, address, Friend))
         conn.commit()
         print '\t\tUpdate thanh cong !!!\n'
 
@@ -193,13 +187,13 @@ class Database:
             cur.execute("select id, friend, TimeDate from Friend where username=? order by TimeDate desc", (username,))
 
             rows = cur.fetchall()
+            self.printData(rows)
 
-            for row in rows:
-                print row
+    def printData(self, rows):
+        for row in rows:
+            print row
 
     def addFriend(self, username, Friend):
-        # t = time.localtime()
-        # time.asctime(t)
         localtime = time.asctime(time.localtime())
         if not self.check2(Friend):
             print '\t\tTai khoan ko ton tai hoac da bi xoa !!!\n'
@@ -232,9 +226,7 @@ class Database:
             cur.execute("select * from AccountInfo where username =?", (username,))
 
             rows = cur.fetchall()
-
-            for row in rows:
-                print row
+            self.printData(rows)
 
     def sortFriend(self, username):
         conn = self.connect_db()
@@ -245,9 +237,7 @@ class Database:
                         "order by Message.TimeDate desc", (username,))
 
             rows = cur.fetchall()
-
-            for row in rows:
-                print row
+            self.printData(rows)
 
     def sortFriendOfCity(self, username):
         conn = self.connect_db()
@@ -260,8 +250,7 @@ class Database:
 
             rows = cur.fetchall()
 
-            for row in rows:
-                print row
+            self.printData(rows)
 
     def checkID(self, id):
         conn = self.connect_db()

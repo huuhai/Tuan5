@@ -1,3 +1,5 @@
+import os
+
 class Menu_Display:
 
     def menu_Display1(self):
@@ -51,3 +53,21 @@ class Menu_Display:
         print "\t|\t4. Thoat\t\t\t\t\t\t|"
         print "\t|                                                               |"
         print "\t================================================================="
+
+    def notify_Ctr_N_Ctr_B(self):
+        print '\n'
+        os.system('cls')
+        print '\n\nNhan Ctr+N de hien thi danh sach hoac nhan Ctr+B de tro ve MENU TIN NHAN !!!\n\n'
+
+    def notify_ChoiceSendMessage(self):
+        print '\n\nCo 2 cach de gui tin nhan:\n1. Nhap vao tai khoan nguoi nhan\n2. Bam truc tiep Ctr+L\n\n'
+        print 'Nhap ten nguoi nhan: '
+
+    def notify_Ctr_R(self):
+        print '\nNeu muon tra loi tin nhan thi nhan Ctr+R hoac an phim bat ky de thoat !!!\n\n'
+
+    def notifyFailAccount(self):
+        print '\t\tTai khoan ko ton tai hoac da bi xoa !!!\n'
+
+    def notifyFailEdit(self):
+        print '\t\tChua ket ban. Ko the sua !!!\n'

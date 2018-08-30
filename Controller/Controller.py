@@ -1,121 +1,87 @@
 # -*- coding: utf-8 -*-
 from msvcrt import getch
-import os
 from UserView import UserView
 from Database import Database
-
-# from User import User
-
-userView = UserView()
-database = Database()
+from Menu_Display import Menu_Display
 
 
 class Controller:
+    userView = UserView()
+    database = Database()
+    menu_Display = Menu_Display()
 
     def signUp(self):
-        # user = User()
-        userView.dangKy()
-        # database.signUp(user.username, user.password, user.fullname, user.birthday, user.sex, user.address)
-        database.signUp(userView.username, userView.password, userView.fullname, userView.birthday, userView.sex,
-                        userView.address)
+        self.userView.signUp()
+        self.database.signUp(self.userView.username, self.userView.password, self.userView.fullname,
+                             self.userView.birthday, self.userView.sex,
+                             self.userView.address)
 
     def logIn(self):
-        userView.nhap()
-        database.logIn(userView.username, userView.password)
+        self.userView.logIn()
+        self.database.logIn(self.userView.username, self.userView.password)
 
     def showMessageSent(self, username):
-        print '\n'
-        os.system('cls')
-        print '\n\nNhan Ctr+N de hien thi danh sach hoac nhan Ctr+B de tro ve MENU TIN NHAN !!!\n\n'
-        database.showMessageSent(username)
+        self.menu_Display.notify_Ctr_N_Ctr_B()
+        self.database.showMessageSent(username)
 
     def showMessageReceiver(self, username):
-        print '\n'
-        os.system('cls')
-        print '\nNhan Ctr+N de hien thi danh sach hoac nhan Ctr+B de tro ve MENU TIN NHAN !!!\n\n'
-        database.showMessageReceived(username)
-        print '\nNeu muon tra loi tin nhan thi nhan Ctr+R hoac an phim bat ky de thoat !!!\n\n'
+        self.menu_Display.notify_Ctr_N_Ctr_B()
+        self.database.showMessageReceived(username)
+        self.menu_Display.notify_Ctr_R()
         Ctr_R = ord(getch())
         if Ctr_R == 18:
-            print '\n\nCo 2 cach de gui tin nhan:\n1. Nhap vao tai khoan nguoi nhan\n2. Bam truc tiep Ctr+L\n\n'
-            print 'Nhap ten nguoi nhan: '
-            Ctr_L = ord(getch())
-            if Ctr_L == 12:
-                print '\n\n'
-                database.Ctr_L(username)
-            else:
-                userView.nhanTin()
-                database.sendMessage(username, userView.receiver, userView.content)
-
+            self.menu_Display.notify_ChoiceSendMessage()
+            self.key_shortcut(username)
 
     def sendMessage(self, username):
-        print '\n\nCo 2 cach de gui tin nhan:\n1. Nhap vao tai khoan nguoi nhan\n2. Bam truc tiep Ctr+L\n\n'
-        print 'Nhap ten nguoi nhan: '
+        self.menu_Display.notify_ChoiceSendMessage()
+        self.key_shortcut(username)
 
+    def key_shortcut(self, username):
         Ctr_L = ord(getch())
         if Ctr_L == 12:
-            print '\n\n'
-            database.Ctr_L(username)
+            print '\n'
+            self.database.Ctr_L(username)
         else:
-            userView.nhanTin()
-            database.sendMessage(username, userView.receiver, userView.content)
-
+            self.userView.nhanTin()
+            self.database.sendMessage(username, self.userView.receiver, self.userView.content)
 
     def editInfoFriend(self, username):
-        userView.editInfoFriend = raw_input('Nhap ten nguoi ban muon sua thong tin: ')
-        if database.check2(userView.editInfoFriend):
-            if database.checkTableFriend(username, userView.editInfoFriend):
-                database.showInfoFriend(username, userView.editInfoFriend)
+        self.userView.inputNameFriend()
+        if self.database.check2(self.userView.editInfoFriend):
+            if self.database.checkTableFriend(username, self.userView.editInfoFriend):
+                self.database.showInfoFriend(username, self.userView.editInfoFriend)
                 print '\t\t-----------SUA THONG TIN BAN BE-----------'
-                userView.fullname = raw_input('Nhap day du ho va ten: ')
-                userView.birthday = raw_input('Ngay sinh: ')
-                userView.sex = raw_input('Gioi tinh: ')
-                userView.address = raw_input('Dia chi: ')
-                database.editInfoFriend(userView.editInfoFriend, userView.fullname, userView.birthday, userView.sex,
-                                        userView.address)
+                self.userView.inputInfo()
+                self.database.editInfoFriend(self.userView.editInfoFriend, self.userView.fullname,
+                                             self.userView.birthday, self.userView.sex,
+                                             self.userView.address)
             else:
-                print '\t\tChua ket ban. Ko the sua !!!\n'
+                self.menu_Display.notifyFailEdit()
         else:
-            print '\t\tTai khoan ko ton tai hoac da bi xoa !!!\n'
-
+            self.menu_Display.notifyFailAccount()
 
     def listFriend(self, username):
-        database.listFriend(username)
-
+        self.database.listFriend(username)
 
     def addFriend(self, username):
-        userView.Friend = raw_input('Nhap ten ban be muon them: ')
-        database.addFriend(username, userView.Friend)
-
+        self.userView.inputAddFriend()
+        self.database.addFriend(username, self.userView.Friend)
 
     def block(self, username):
-        userView.block = raw_input('Nhap ten ban be muon block: ')
-        database.block(username, userView.block)
-
+        self.userView.inputBlockFriend()
+        self.database.block(username, self.userView.block)
 
     def showInfo(self, username):
-        database.showInfo(username)
-
+        self.database.showInfo(username)
 
     def sortFriend(self, username):
-        database.sortFriend(username)
-
+        self.database.sortFriend(username)
 
     def sortFriendOfCity(self, username):
-        database.sortFriendOfCity(username)
-
+        self.database.sortFriendOfCity(username)
 
     def Ctr_L(self, username):
-        print '\nCo 2 cach de gui tin nhan:\n1. Nhap vao tai khoan nguoi nhan\n2. Bam truc tiep Ctrl+L de hien thi danh sach ban be\n\n'
-        print 'Nhap ten nguoi nhan: '
-
+        self.menu_Display.notify_ChoiceSendMessage()
         # Hàm getch() sẽ nhận dạng phím mà bạn ấn vào và hàm ord() sẽ chuyển nó về mã ASCII
-        Ctr_L = ord(getch())
-        if Ctr_L == 12:
-            print(Ctr_L)
-            # để dừng màn hình xem thôi
-            # i = input()
-            database.Ctr_L(username)
-        else:
-            userView.nhanTin()
-            database.sendMessage(username, userView.receiver, userView.content)
+        self.key_shortcut(username)
